@@ -1,0 +1,50 @@
+#version 450
+
+layout (local_size_x = 256) in;
+
+layout (push_constant) uniform pc 
+{
+        float dt;
+};
+
+// layout (binding = 0) buffer l0
+// {
+//         uint npoint_masses;
+//         vec4 accelerations[];
+//         vec4 velocities[];
+//         vec4 positions[];
+
+//         uint nentities;
+//         entity_t entities[];
+// };
+
+void main()
+{
+        uint id = gl_GlobalInvocationId.x;
+
+        if (nentities <= id)
+                return;
+
+        entity_t entity = entities[id];
+
+
+        // gather the forces on it
+        // get the acceleration 
+        // runge kutta to find the velocity
+        // then runge kutta to find the position 
+
+        positions[id] += dt * (velocities[id] + accelerations[id]);
+
+        // for (uint i = 0; i < entity.nvertices; i++)
+        // {       
+        //         vec3 f1 = next_position(id, dt);
+        //         vec3 f2 = ;
+        //         vec3 f3 = ;
+        //         vec3 f4 = ;
+        
+        //         pos += dt / 6 * (f1 + 2 * f2 + 2 * f3 + f4);
+        // }
+
+
+
+}
