@@ -1,0 +1,76 @@
+#version 450
+
+
+layout(push_constant) uniform pc { vec4 frustum_planes[6]; };
+
+struct object_t
+{
+        int bro;
+};
+
+struct meshlet_t
+{
+        int bro;
+};
+
+struct VkDrawIndexedIndirectCommand
+{
+        uint indexCount;
+        uint instanceCount;
+        uint firstIndex;
+        int vertexOffset;
+        uint firstInstance;
+};
+
+layout(binding = 0) buffer l0
+{
+        uint ndraws, ncullable_meshlets;
+
+        uint indices[];
+        float vertices[]; 
+
+        uint nobjects;
+        object_t objects[];
+
+        uint nmeshlets;
+        meshlet_t meshlets[];
+
+        VkDrawIndexedIndirectCommand draws[];        
+};
+
+bool object_in_frustum(uint id)
+{
+        object_t object = objects[id];
+
+        for (uint i = 0; i < 6; i++)
+        {
+                if (dot(object.pos, frustum_planes[i]) + object.radius < 0.0)
+                {
+                        return false;
+                }
+        }
+        return true;
+}
+
+void main()
+{
+        uint id = gl_GlobalInvocationId.x;
+
+        if (nobjects < id)
+                return;
+
+        if (!object_in_frustum(id))
+                return;
+
+        // uint lod = select_lod(id);      
+
+        /* meshlet culling */
+        draws[atomicAdd(ndraws, 1)] = (VkDrawIndexedIndirectCommand) 
+        {
+                .indexCount    = object.nindices,
+                .instanceCount = 1,
+                .firstIndex    = object.idx_indices,
+                .vertexOffset  = object.idx_vertices,
+                .firstInstance = id
+        };
+}

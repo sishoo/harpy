@@ -1,0 +1,52 @@
+#version 450
+
+#define NCELLS 9
+#define USE_SCALE_UP 0
+
+layout(push_constant) uniform pc { vec3 frustum_points[8]; };
+
+layout(binding = 0) buffer l0
+{
+        uint nlights;
+        light_t lights[];
+};
+
+layout(binding = 1) writeonly image3D cluster_image;
+
+void main()
+{
+        vec3 cell_pos    = gl_LocalInvocationId.xyz;
+        vec4 color_accum = vec4();
+
+        mat4 cell_mat = {
+                1,
+                0,
+                0,
+                cell_pos.x,
+                0,
+                1,
+                0,
+                cell_pos.y,
+                0,
+                0,
+                1,
+                cell_pos.z,
+                0,
+                0,
+                0,
+                NCELLS
+        };
+
+        for (uint i = 0; i < nlights; i++)
+        {
+                light_t light = lights[id];
+
+                bool light_in_cell = 0;
+                for (uint j = 0; j < 6; j++)
+                {
+                        vec4 cell_plane = frustum_planes[i] * cell_mat;
+                        light_in_cell |=
+                                dot(light_pos, cell_plane) + light.radius < 0.0;
+                }
+        }
+}
