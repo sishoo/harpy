@@ -3,6 +3,7 @@
 layout (push_constant) uniform pc
 {
         float dt;
+        vec3 __padding;
         mat4 proj_mat, view_mat;
 };
 

@@ -1,0 +1,31 @@
+# Format Style Options - Created with Clang Power Tools
+---
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: Allman
+ContinuationIndentWidth: 8
+IndentPPDirectives: BeforeHash
+IndentWidth: 8
+SpaceAfterCStyleCast: true
+AlignConsecutiveAssignments: Consecutive
+Cpp11BracedListStyle: true
+PenaltyReturnTypeOnItsOwnLine: 10000000
+ColumnLimit: 90
+...
+
+
+# #original
+# # Format Style Options - Created with Clang Power Tools
+# ---
+# AlignAfterOpenBracket: BlockIndent
+# BinPackArguments: false
+# BinPackParameters: false
+# BreakBeforeBraces: Allman
+# ContinuationIndentWidth: 8
+# IndentPPDirectives: BeforeHash
+# IndentWidth: 8
+# SpaceAfterCStyleCast: true
+# AlignConsecutiveAssignments: Consecutive
+# ...
+

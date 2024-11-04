@@ -2,8 +2,7 @@
 
 #include <stdio.h>
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.h>
 
 #define VK_TRY(expr)                                                                     \
         do                                                                               \
@@ -12,9 +11,10 @@
                 if (VK_TRY_res != VK_SUCCESS)                                            \
                 {                                                                        \
                         fprintf(stderr,                                                  \
-                                "%s, was %d, not VK_SUCCESS.\n",                         \
-                                #expr,                                                   \
-                                VK_TRY_res);                                             \
+                                "VK_TRY FAILED WITH '%d' ON %d:\n\t%s\n",                \
+                                VK_TRY_res,                                              \
+                                __LINE__,                                                \
+                                #expr);                                                  \
                         abort();                                                         \
                 }                                                                        \
         } while (0);
